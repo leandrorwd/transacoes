@@ -1,0 +1,2 @@
+connect 'jdbc:derby:banco;create=true;user=usuario;password=senha';
+create table contas (MAP_ID INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), conta integer, valor float(10));
