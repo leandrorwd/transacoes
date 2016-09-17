@@ -26,8 +26,8 @@ public class ContaDAO {
 			comando2.setInt(1, contaDestino);
 
 			if (comando1.executeUpdate() > 0 && comando2.executeUpdate() > 0) {
+				System.out.println("Transferência de R$ 50,00 efetuada com sucesso");
 				conexao.commit();
-				System.out.println("Inserção efetuada com sucesso");
 			} else {
 				System.out.println("Falha na inserção");
 			}
@@ -35,21 +35,42 @@ public class ContaDAO {
 			ex.printStackTrace();
 		}
 	}
-
-	public void listBD() {
+	
+	public double saldoConta(int conta) {
+		
+		double saldo = 0;
 		try (Connection conexao = getConexaoViaDriverManager()) {
-			String sql3 = "select * from contas";
+			String sql3 = "select * from contas where conta = (?)";
 			try (PreparedStatement comando = conexao.prepareStatement(sql3)) {
+				comando.setInt(1, conta);
 				try (ResultSet resultados = comando.executeQuery()) {
-					while (resultados.next()) {
-						System.out.println(
-								"Conta: " + resultados.getInt("conta") + " Valor: " + resultados.getDouble("valor"));
+					if (resultados.next()) {
+						saldo = resultados.getDouble("valor");
 					}
 				}
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
+		return saldo;
+		
+	}
+
+	public double saldoBanco() {
+		double saldo = 0;
+		try (Connection conexao = getConexaoViaDriverManager()) {
+			String sql3 = "select * from contas";
+			try (PreparedStatement comando = conexao.prepareStatement(sql3)) {
+				try (ResultSet resultados = comando.executeQuery()) {
+					while (resultados.next()) {
+						saldo += resultados.getDouble("valor");
+					}
+				}
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return saldo;
 	}
 
 	public Connection getConexaoViaDriverManager() throws Exception {
