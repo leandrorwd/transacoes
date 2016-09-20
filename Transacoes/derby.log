@@ -1,0 +1,13 @@
+----------------------------------------------------------------
+Mon Sep 19 21:03:32 GMT-03:00 2016:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.12.1.1 - (1704137): instance a816c00e-0157-44e7-9c00-000002bad730 
+on database directory C:\Users\Lucas\Documents\GitHub\transacoes\Transacoes\banco with class loader sun.misc.Launcher$AppClassLoader@4e25154f 
+Loaded from file:/C:/Users/Lucas/Documents/GitHub/transacoes/Transacoes/src/exercicio/derby.jar
+java.vendor=Oracle Corporation
+java.runtime.version=1.8.0_60-b27
+user.dir=C:\Users\Lucas\Documents\GitHub\transacoes\Transacoes
+os.name=Windows 10
+os.arch=amd64
+os.version=10.0
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''

@@ -1,5 +1,9 @@
 package exercicio;
 
+import javafx.scene.input.DataFormat;
+
+import java.text.DecimalFormat;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -33,6 +37,11 @@ public class Conta {
 
     public void setSaldo(double saldo) {
         this.saldo = saldo;
-    }  
-    
+    }
+
+    @Override
+    public String toString() {
+        DecimalFormat fr = new DecimalFormat();
+        return "Saldo da conta " + this.numero + ": R$ " + fr.format(this.saldo);
+    }
 }

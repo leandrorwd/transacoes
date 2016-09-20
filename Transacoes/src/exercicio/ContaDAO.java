@@ -1,9 +1,9 @@
 package exercicio;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import org.apache.derby.jdbc.EmbeddedDataSource;
+
+import javax.sql.DataSource;
+import java.sql.*;
 
 public class ContaDAO {
 
@@ -11,6 +11,47 @@ public class ContaDAO {
 	public static String DB_NAME = "banco";
 	public static String USER_NAME = "usuario";
 	public static String PASSWORD = "senha";
+	private static DataSource dataSource;
+
+	private static Connection getConexaoViaDataSource() throws Exception {
+		if (dataSource == null) {
+			EmbeddedDataSource ds = new EmbeddedDataSource();
+			ds.setDatabaseName(DB_NAME);
+			ds.setCreateDatabase("create");
+			ds.setUser(USER_NAME);
+			ds.setPassword(PASSWORD);
+			dataSource = ds;
+		}
+		return dataSource.getConnection();
+	}
+	public static void createBd(){
+		try (Connection conexao = getConexaoViaDataSource()) {
+			String sql = "create table contas (MAP_ID INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), conta integer, valor float(10))";
+			try (Statement comando = conexao.createStatement()) {
+				comando.executeUpdate(sql);
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+
+	public void inserirConta(Conta conta) {
+		String sql = "insert into contas(conta, valor) values(?,?)";
+		int result = 0;
+		try (Connection connection = getConexaoViaDataSource()) {
+			try (PreparedStatement command = connection.prepareStatement(sql)) {
+				command.setInt(1, conta.getNumero());
+				command.setDouble(2, conta.getSaldo());
+				result = command.executeUpdate();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		if(result == 0) {
+			throw new IllegalArgumentException("Falha ao inserir conta");
+		}
+	}
+
 
 	public void tranfer(int contaOrigem, int contaDestino) {
 
@@ -26,10 +67,10 @@ public class ContaDAO {
 			comando2.setInt(1, contaDestino);
 
 			if (comando1.executeUpdate() > 0 && comando2.executeUpdate() > 0) {
-				System.out.println("Transferência de R$ 50,00 efetuada com sucesso");
+				System.out.println("Transferï¿½ncia de R$ 50,00 efetuada com sucesso");
 				conexao.commit();
 			} else {
-				System.out.println("Falha na inserção");
+				throw new IllegalArgumentException("Falha na transferencia");
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
