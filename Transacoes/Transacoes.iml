@@ -11,7 +11,7 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/src/exercicio/derby.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../persistencia/persistencia/derby.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

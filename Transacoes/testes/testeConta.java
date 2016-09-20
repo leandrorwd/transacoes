@@ -40,7 +40,12 @@ public class testeConta {
         int conta2 = 456;
         contaDAO.inserirConta(new Conta(conta1, 5000.00));
         contaDAO.inserirConta(new Conta(conta2, 5000.00));
+        // antes da transferencia
+        assertEquals(10000.00, contaDAO.saldoBanco(), DELTA);
+        assertEquals(5000.00, contaDAO.saldoConta(conta1), DELTA);
+        assertEquals(5000.00, contaDAO.saldoConta(conta2), DELTA);
         contaDAO.tranfer(conta1, conta2);
+        // depois da transferencia
         assertEquals(10000.00, contaDAO.saldoBanco(), DELTA);
         assertEquals(5050.00, contaDAO.saldoConta(conta1), DELTA);
         assertEquals(4950.00, contaDAO.saldoConta(conta2), DELTA);
